@@ -12,6 +12,8 @@ constexpr float twoPi = 6.2831853071795864769f;
 }
 
 ShatterDelayEngine::ShatterDelayEngine()
+    : delayLeft (std::make_unique<DelayBuffer>()),
+      delayRight (std::make_unique<DelayBuffer>())
 {
     prepare (44100.0);
     reset();
@@ -25,8 +27,8 @@ void ShatterDelayEngine::prepare (double newSampleRate) noexcept
 
 void ShatterDelayEngine::reset() noexcept
 {
-    delayLeft.fill (0.0f);
-    delayRight.fill (0.0f);
+    delayLeft->fill (0.0f);
+    delayRight->fill (0.0f);
     writeIndex = 0;
     dampLeft = 0.0f;
     dampRight = 0.0f;
@@ -59,8 +61,8 @@ StereoFrame ShatterDelayEngine::processSample (float inputLeft, float inputRight
     const auto leftDelay = std::clamp (baseDelay + driftSamples, 2.0f, static_cast<float> (maxDelaySamples - 4));
     const auto rightDelay = std::clamp (baseDelay * 1.137f - driftSamples * 0.71f, 2.0f, static_cast<float> (maxDelaySamples - 4));
 
-    auto delayedLeft = readDelay (delayLeft, leftDelay);
-    auto delayedRight = readDelay (delayRight, rightDelay);
+    auto delayedLeft = readDelay (*delayLeft, leftDelay);
+    auto delayedRight = readDelay (*delayRight, rightDelay);
 
     const auto dampAmount = 0.08f + params.damping * 0.88f;
     dampLeft += dampAmount * (delayedLeft - dampLeft);
@@ -75,8 +77,8 @@ StereoFrame ShatterDelayEngine::processSample (float inputLeft, float inputRight
     const auto foldedLeft = fold (delayedLeft + crackle);
     const auto foldedRight = fold (delayedRight - crackle * 0.73f);
     const auto feedback = params.feedback * (0.12f + 0.80f * (1.0f - params.shatter * 0.18f));
-    delayLeft[static_cast<std::size_t> (writeIndex)] = sanitizeAudio (dryLeft + foldedRight * feedback);
-    delayRight[static_cast<std::size_t> (writeIndex)] = sanitizeAudio (dryRight + foldedLeft * feedback);
+    (*delayLeft)[static_cast<std::size_t> (writeIndex)] = sanitizeAudio (dryLeft + foldedRight * feedback);
+    (*delayRight)[static_cast<std::size_t> (writeIndex)] = sanitizeAudio (dryRight + foldedLeft * feedback);
     writeIndex = (writeIndex + 1) % maxDelaySamples;
 
     const auto wetLeft = fold (foldedLeft + delayedRight * params.shatter * 0.16f);
@@ -99,7 +101,7 @@ void ShatterDelayEngine::process (float* left, float* right, int numSamples) noe
     }
 }
 
-float ShatterDelayEngine::readDelay (const std::array<float, maxDelaySamples>& buffer, float delaySamples) const noexcept
+float ShatterDelayEngine::readDelay (const DelayBuffer& buffer, float delaySamples) const noexcept
 {
     const auto integral = static_cast<int> (delaySamples);
     const auto fraction = delaySamples - static_cast<float> (integral);

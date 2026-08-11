@@ -3,6 +3,7 @@
 #include "shatterdelay/ShatterDelayDspPrimitives.h"
 
 #include <array>
+#include <memory>
 
 namespace shatterdelay
 {
@@ -31,6 +32,7 @@ public:
 
 private:
     static constexpr int maxDelaySamples = 192000;
+    using DelayBuffer = std::array<float, maxDelaySamples>;
 
     struct ClampedParameters
     {
@@ -43,15 +45,15 @@ private:
         float output = 0.86f;
     };
 
-    [[nodiscard]] float readDelay (const std::array<float, maxDelaySamples>& buffer, float delaySamples) const noexcept;
+    [[nodiscard]] float readDelay (const DelayBuffer& buffer, float delaySamples) const noexcept;
     [[nodiscard]] float fold (float input) const noexcept;
     [[nodiscard]] float sanitizeAudio (float value) const noexcept;
     [[nodiscard]] StereoFrame sanitizeFrame (float left, float right) const noexcept;
 
     ClampedParameters params;
     double sampleRate = 44100.0;
-    std::array<float, maxDelaySamples> delayLeft {};
-    std::array<float, maxDelaySamples> delayRight {};
+    std::unique_ptr<DelayBuffer> delayLeft;
+    std::unique_ptr<DelayBuffer> delayRight;
     int writeIndex = 0;
     float dampLeft = 0.0f;
     float dampRight = 0.0f;
