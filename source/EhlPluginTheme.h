@@ -44,6 +44,7 @@ public:
 
     void paint (yup::Graphics& graphics) override
     {
+        const auto enabled = isEnabled();
         const auto bounds = getLocalBounds().to<float>().reduced (grid);
         const auto cell = std::max (
             grid,
@@ -56,10 +57,10 @@ public:
             side
         };
 
-        graphics.setFillColor (low);
+        graphics.setFillColor (enabled ? low : ink);
         graphics.fillRect (frame);
-        graphics.setStrokeColor (hasKeyboardFocus() || isMouseOver() ? paper : mid);
-        graphics.setStrokeWidth (hasKeyboardFocus() ? 2.0f : 1.0f);
+        graphics.setStrokeColor (enabled ? (hasKeyboardFocus() || isMouseOver() ? paper : mid) : low);
+        graphics.setStrokeWidth (enabled && hasKeyboardFocus() ? 2.0f : 1.0f);
         graphics.strokeRect (frame.reduced (1.0f));
 
         constexpr std::array<int, 16> ringX { 0, 0, 0, 0, 0, 1, 2, 3, 4, 4, 4, 4, 4, 3, 2, 1 };
@@ -73,14 +74,14 @@ public:
 
         for (int index = 0; index < segmentCount; ++index)
         {
-            graphics.setFillColor (index < activeSegments ? paper : ink);
+            graphics.setFillColor (index < activeSegments ? (enabled ? paper : mid) : ink);
             graphics.fillRect (originX + ringX[static_cast<std::size_t> (index)] * cell + 1.0f,
                                originY + ringY[static_cast<std::size_t> (index)] * cell + 1.0f,
                                block,
                                block);
         }
 
-        graphics.setFillColor (isCurrentlyBeingDragged() ? paper : mid);
+        graphics.setFillColor (enabled ? (isCurrentlyBeingDragged() ? paper : mid) : low);
         graphics.fillRect (frame.getCenterX() - cell * 0.5f + 1.0f,
                            frame.getCenterY() - cell * 0.5f + 1.0f,
                            block,

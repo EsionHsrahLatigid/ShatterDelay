@@ -28,15 +28,15 @@
 - Host automation semantics take precedence over decorative control replacement.
 
 ## Visual language
-- Color: `#000000` to `#FFFFFF` grayscale only.
+- Color tokens: ink `#050505`, low `#2A2A2A`, mid `#8A8A86`, paper `#F2F2F0`.
 - Typography: YUP native fallback; uppercase labels and stable numeric value labels.
-- Layout: 960x540 logical canvas, square edges, no elevation.
+- Layout: 640x360 logical canvas on a 4px base grid, with 8px group spacing, square edges, and no elevation.
 - Motion: 30 Hz decaying meters only; no stochastic or full-panel animation.
 
 ## Components
-- ParameterGridEditor with YUP rotary sliders and host gestures.
+- ParameterGridEditor with square pixel sliders, host gestures, and a clockwise 16-step perimeter indicator.
 - Seven-column single-row parameter grid.
-- Standalone-only audition buttons plus 32-step rectangular meters.
+- Standalone-only audition buttons plus 24-step rectangular meters.
 
 ## Accessibility
 - White or muted-gray text on black with high contrast.
@@ -44,7 +44,7 @@
 - Values remain textual; controls retain native YUP interaction behavior.
 
 ## Responsive behavior
-- Preferred size: 960x540, resizable with aspect ratio preserved.
+- Preferred size: 640x360, resizable with aspect ratio preserved.
 - Seven controls remain in one row; control diameter shrinks before labels disappear.
 
 ## Interaction states
