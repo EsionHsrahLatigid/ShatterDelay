@@ -237,7 +237,7 @@ yup::AudioProcessorEditor* ShatterDelayPlugin::createEditor()
     return new ParameterGridEditor (*this,
                                     "ShatterDelay",
                                     "Fractional stereo delay with standalone-only audition.",
-                                    0xffd8d8d8u);
+                                    0xfff2f2f0u);
 #endif
 }
 

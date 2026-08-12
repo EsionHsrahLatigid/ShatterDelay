@@ -39,7 +39,6 @@ private:
 
     yup::String title;
     yup::String warning;
-    std::uint32_t accentColor = 0xffd8d8d8u;
     std::unique_ptr<yup::Label> titleLabel;
     std::unique_ptr<yup::Label> warningLabel;
     std::vector<yup::AudioParameter::Ptr> parameters;
