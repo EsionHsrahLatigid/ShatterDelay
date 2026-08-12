@@ -1,6 +1,6 @@
 #include "ParameterGridEditor.h"
 
-#include "EhlPluginTheme.h"
+#include <ehl/yup_plugin_ui/EhlPluginTheme.h>
 #include "ShatterDelayPlugin.h"
 
 #include <algorithm>

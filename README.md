@@ -27,6 +27,12 @@ The interpolated delay reads follow the principles in [Physical Audio Signal Pro
 
 ## Build and artifacts
 
+Clone with `--recurse-submodules`, or initialize the shared [yup-ehl-design-module](https://github.com/EsionHsrahLatigid/yup-ehl-design-module) before configuring:
+
+```sh
+git submodule update --init
+```
+
 ```sh
 cmake --preset engine-debug
 cmake --build --preset engine-debug --parallel
