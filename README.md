@@ -1,6 +1,5 @@
 # ShatterDelay
 
-ShatterDelay is a YUP stereo delay built as a Digital Harsh Noise performance weapon. Fractional stereo taps, cross-feedback, loop damping, slow delay drift, activity-gated deterministic fracture bursts, and bounded wavefolding turn an input into torn, unstable-looking repeats without making the render nondeterministic. Hosted builds preserve silence; Standalone adds an audition source and meters only at compile time.
 
 ## Identity and formats
 

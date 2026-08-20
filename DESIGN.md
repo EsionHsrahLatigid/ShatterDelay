@@ -4,7 +4,6 @@
 - Status: Active
 - Last refreshed: 2026-08-12
 - Primary product surfaces: YUP Standalone, VST3, AUv2 editor
-- Evidence reviewed: fractional-delay and feedback-comb references plus the nine-effect Digital Harsh Noise UI survey
 
 ## Brand
 - Personality: fractured timing terminal; violent but controlled.
